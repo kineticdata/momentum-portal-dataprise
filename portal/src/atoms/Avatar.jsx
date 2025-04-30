@@ -27,10 +27,9 @@ export const Avatar = ({
   return (
     <Tag
       className={clsx(
-        'group flex justify-center items-center rounded-full p-0.5 outline-0 transition',
-        'bg-primary-900 bg-glassmorphism-border [--glassmorphism-angle:145deg]',
-        isLink && 'hover:bg-gray-500',
-        isLink && 'focus-visible:bg-secondary-400',
+        'group flex justify-center items-center rounded-full transition uppercase leading-none',
+        isLink && 'kbtn kbtn-accent',
+        !isLink && 'bg-accent text-accent-content',
         {
           'h-4 w-4': size === 'sm',
           'h-6 w-6': size === 'md',
@@ -38,29 +37,19 @@ export const Avatar = ({
           'h-12 w-12': size === 'xl',
           'h-16 w-16': size === 'xxl',
         },
+        {
+          'text-xs': size === 'sm',
+          'text-base': size === 'md',
+          'text-h3 font-medium': size === 'lg',
+          'text-h2 font-medium': size === 'xl',
+          'text-h1 font-medium': size === 'xxl',
+        },
         className,
       )}
       {...additionalProps}
       {...passThroughProps}
     >
-      <div
-        className={clsx(
-          'flex justify-center items-center h-full w-full rounded-full transition',
-          'bg-primary-900 text-primary-100 uppercase leading-none',
-          isLink && 'group-hover:bg-gray-500 group-hover:text-white',
-          isLink &&
-            'group-focus-visible:bg-secondary-400 group-focus-visible:text-gray-950',
-          {
-            'text-xs': size === 'sm',
-            'text-base': size === 'md',
-            'text-h3 font-medium': size === 'lg',
-            'text-h2 font-medium': size === 'xl',
-            'text-h1 font-medium': size === 'xxl',
-          },
-        )}
-      >
-        {username.slice(0, 1)}
-      </div>
+      {username.slice(0, 1)}
     </Tag>
   );
 };
