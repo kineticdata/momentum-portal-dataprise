@@ -1,0 +1,18 @@
+@utility ktextarea-sm {
+  font-size: 0.875rem;
+}
+@utility ktextarea-md {
+  font-size: 1rem;
+}
+@utility ktextarea {
+  font-size: 1rem;
+  @apply block w-full hover:bg-base-200 font-medium px-6;
+  @apply focus:outline-0 focus:border-base-300 focus:bg-base-100 focus:ring-3 focus:ring-primary/40;
+  @apply focus-within:outline-0 focus-within:border-base-300 focus-within:bg-base-100 focus-within:ring-3 focus-within:ring-primary/40;
+}
+@utility ktextarea-lg {
+  font-size: 1rem;
+}
+@utility ktextarea-xl {
+  font-size: 1rem;
+}

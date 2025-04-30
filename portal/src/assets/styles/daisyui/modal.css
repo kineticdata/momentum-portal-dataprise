@@ -1,0 +1,15 @@
+@utility kmodal {
+  &:has(> [data-state='open']) {
+    @apply pointer-events-auto visible opacity-100;
+    .kmodal-box {
+      translate: 0 0;
+      scale: 1;
+      opacity: 1;
+    }
+  }
+}
+
+@utility kmodal-box {
+  @apply flex flex-col gap-6 max-md:w-screen md:max-w-[calc(100vw-3rem)] shadow-lg rounded-4xl;
+  max-height: calc(100vh - 3rem);
+}

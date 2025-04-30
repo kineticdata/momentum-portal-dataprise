@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import logo from '../../assets/images/logo-full.svg';
-import { Icon } from '../../atoms/Icon.jsx';
 
 export const Login = loginProps => (
   <div className="flex justify-center items-center min-h-screen">
@@ -32,7 +31,7 @@ export const LoginForm = loginProps => {
       <img
         src={themeLogo || logo}
         alt="Logo"
-        className="h-12 object-contain mb-5 mt-5"
+        className="h-6 max-h-12 object-contain mb-5 mt-5"
       />
       <div className="field">
         <label htmlFor="username">Username</label>

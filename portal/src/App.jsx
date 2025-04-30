@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useMatch } from 'react-router-dom';
 import t from 'prop-types';
 import clsx from 'clsx';
 import { fetchKapp, fetchProfile, fetchSpace } from '@kineticdata/react';
