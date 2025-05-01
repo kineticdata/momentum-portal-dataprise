@@ -12,6 +12,7 @@ import { toastError, toastSuccess } from '../../helpers/toasts.js';
 import { getAttributeValue } from '../../helpers/records.js';
 import { Menu } from '../../atoms/Menu.jsx';
 import { openConfirm } from '../../helpers/confirm.js';
+import { useLocation } from 'react-router-dom';
 
 export const Profile = () => {
   const mobile = useSelector(state => state.view.mobile);
@@ -27,6 +28,9 @@ export const Profile = () => {
     newDisplayName: '',
     newPassword: '',
   });
+
+  const location = useLocation();
+  const backPath = location.state?.backPath;
 
   const portalKappSlug = getAttributeValue(
     space,
@@ -107,7 +111,7 @@ export const Profile = () => {
         <Button
           variant="tertiary"
           icon="arrow-left"
-          to=".."
+          to={backPath || '..'}
           aria-label="Back"
           className={clsx(!mobile && 'absolute left-0')}
         />

@@ -6,6 +6,13 @@ import { Button } from '../../atoms/Button.jsx';
 import { HeaderPortal } from './HeaderPortal.jsx';
 import { ServicesPanel } from '../services/ServicesPanel.jsx';
 import { SearchModal } from '../search/SearchModal.jsx';
+import { openConfirm } from '../../helpers/confirm.js';
+import { updateSpace } from '@kineticdata/react';
+import { toastError, toastSuccess } from '../../helpers/toasts.js';
+import { appActions } from '../../helpers/state.js';
+import { Icon } from '../../atoms/Icon.jsx';
+import { Menu } from '../../atoms/Menu.jsx';
+import { UserMenu } from './UserMenu.jsx';
 
 export const DesktopHeader = () => {
   const matchesHome = useMatch('/');
@@ -37,13 +44,7 @@ export const DesktopHeader = () => {
             New Request
           </Button>
         </ServicesPanel>
-        <Avatar
-          username={username}
-          size="xl"
-          to="/profile"
-          className="flex-none"
-          aria-label="Profile"
-        />
+        <UserMenu username={username} />
       </nav>
     </HeaderPortal>
   );

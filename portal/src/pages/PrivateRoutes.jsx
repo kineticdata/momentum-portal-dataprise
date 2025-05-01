@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { DesktopHeader } from '../components/header/DesktopHeader.jsx';
 import { MobileFooter } from '../components/footer/MobileFooter.jsx';
 import { Theme } from './theme/index.jsx';
+import { SettingsRouting } from './settings/index.jsx';
 
 const Redirect = ({ to }) => {
   const params = useParams();
@@ -53,6 +54,7 @@ export const PrivateRoutes = () => {
         <Route path="/requests/*" element={<Requests />} />
         <Route path="/forms/:formSlug/:submissionId?" element={<Form />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/settings/*" element={<SettingsRouting />} />
         <Route path="/login" element={<Navigate to="/" />} />
         <Route path="/*" element={<Home />} />
       </Routes>

@@ -48,6 +48,3 @@
 @utility h6 {
   @apply text-base font-bold;
 }
-@utility text-balance {
-  text-wrap: balance;
-}
