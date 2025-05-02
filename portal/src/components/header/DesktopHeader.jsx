@@ -1,17 +1,10 @@
 import { Link, useMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import logo from '../../assets/images/logo-full.svg';
-import { Avatar } from '../../atoms/Avatar.jsx';
 import { Button } from '../../atoms/Button.jsx';
 import { HeaderPortal } from './HeaderPortal.jsx';
 import { ServicesPanel } from '../services/ServicesPanel.jsx';
 import { SearchModal } from '../search/SearchModal.jsx';
-import { openConfirm } from '../../helpers/confirm.js';
-import { updateSpace } from '@kineticdata/react';
-import { toastError, toastSuccess } from '../../helpers/toasts.js';
-import { appActions } from '../../helpers/state.js';
-import { Icon } from '../../atoms/Icon.jsx';
-import { Menu } from '../../atoms/Menu.jsx';
 import { UserMenu } from './UserMenu.jsx';
 
 export const DesktopHeader = () => {

@@ -115,7 +115,13 @@ The table widget renders a table with data sourced from either a static list, a 
 
 Utils are a collection of helper functions that provide various functionality, such as rendering toasts and confirmation modals. They are accessed through the `bundle.utils` namespace instead of `bundle.widgets`.
 
-[Utils Documentation &#x2B9E;](Utils.md)
+[Utils Documentation &#x2B9E;](UTILS.md)
+
+### Styles
+
+The styles documentation lists all of the Tailwind, DaisyUI, and custom classes that have been exposed to be used in Kinetic forms.
+
+[Styles Documentation &#x2B9E;](STYLES.md)
 
 ---
 

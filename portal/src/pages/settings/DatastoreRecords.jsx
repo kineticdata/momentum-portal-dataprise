@@ -2,13 +2,19 @@ import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { SettingsHeading } from './Settings.jsx';
-import { CoreForm, searchSubmissions } from '@kineticdata/react';
+import {
+  CoreForm,
+  deleteSubmission,
+  searchSubmissions,
+} from '@kineticdata/react';
 import { useData } from '../../helpers/hooks/useData.js';
 import { Loading as Pending } from '../../components/states/Loading.jsx';
 import { TableComponent } from '../../components/kinetic-form/widgets/table.js';
-import { toastSuccess } from '../../helpers/toasts.js';
+import { toastError, toastSuccess } from '../../helpers/toasts.js';
 import clsx from 'clsx';
 import { Error } from '../../components/states/Error.jsx';
+import { openConfirm } from '../../helpers/confirm.js';
+import { callIfFn } from '../../helpers/index.js';
 
 const idToHandle = id =>
   !id ? null : id.toLowerCase() === 'new' ? 'New' : id.slice(-6).toUpperCase();
@@ -90,7 +96,7 @@ export const DatastoreRecords = ({ datastores }) => {
       ) : (
         <>
           {showForm && (
-            <div>
+            <div className="bg-base-100 shadow-card rounded-box p-6 md:p-10">
               <CoreForm
                 submission={id !== 'new' ? id : undefined}
                 kapp="datastore"
@@ -99,6 +105,7 @@ export const DatastoreRecords = ({ datastores }) => {
                 created={handleCreated}
                 updated={handleUpdated}
                 completed={handleCompleted}
+                review={!datastore?.authorization?.Modification}
               />
             </div>
           )}
@@ -169,15 +176,47 @@ export const DatastoreRecords = ({ datastores }) => {
                 addAction={
                   datastore.authorization.Display
                     ? {
-                        label: 'New Record',
+                        label: 'New Row',
                         onClick: () => navigate('new'),
                       }
                     : undefined
                 }
                 selectAction={{
-                  label: 'View Record',
+                  label: 'View Row',
                   onClick: row => navigate(row._id),
                 }}
+                rowActions={
+                  datastore.authorization.Modification
+                    ? [
+                        {
+                          label: 'Delete Row',
+                          icon: 'trash',
+                          onClick: row =>
+                            openConfirm({
+                              title: 'Delete Row',
+                              description: `Are you sure you want to delete row ${row._handle}?`,
+                              acceptLabel: 'Delete',
+                              accept: () =>
+                                deleteSubmission({ id: row._id }).then(
+                                  ({ error }) => {
+                                    if (error) {
+                                      toastError({
+                                        title: 'Delete Failed',
+                                        description: error.message,
+                                      });
+                                    } else {
+                                      toastSuccess({
+                                        title: 'Row was deleted successfully',
+                                      });
+                                      callIfFn(reloadData);
+                                    }
+                                  },
+                                ),
+                            }),
+                        },
+                      ]
+                    : undefined
+                }
                 allowExport={false}
               />
             </div>

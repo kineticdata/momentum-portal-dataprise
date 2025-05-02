@@ -40,6 +40,9 @@ export const appActions = regRedux(
     kapp: null,
     // Profile record
     profile: null,
+    cid: null,
+    // Client config record for current user
+    config: null,
     // Error from fetching any app data
     error: null,
   },
@@ -64,10 +67,19 @@ export const appActions = regRedux(
     },
     setProfile(state, { error, profile }) {
       if (error) state.error = state.error || error;
-      else state.profile = profile;
+      else {
+        state.profile = profile;
+        state.cid = getAttributeValue(profile, 'CID');
+      }
     },
     updateProfile(state, profile) {
       Object.assign(state.profile, profile);
+    },
+    setConfig(state, { error, submissions }) {
+      if (error) state.error = state.error || error;
+      else if (!submissions?.[0])
+        state.error = { message: 'Client configuration data not found.' };
+      else state.config = submissions[0];
     },
   },
 );

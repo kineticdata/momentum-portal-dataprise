@@ -2,7 +2,12 @@ import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import t from 'prop-types';
 import clsx from 'clsx';
-import { fetchKapp, fetchProfile, fetchSpace } from '@kineticdata/react';
+import {
+  fetchKapp,
+  fetchProfile,
+  fetchSpace,
+  searchSubmissions,
+} from '@kineticdata/react';
 import { Toaster } from './atoms/Toaster.jsx';
 import { Loading } from './components/states/Loading.jsx';
 import { Error } from './components/states/Error.jsx';
@@ -16,6 +21,7 @@ import { Login } from './pages/login/Login.jsx';
 import { ConfirmationModal } from './components/confirm/ConfirmationModal.jsx';
 import { ThemeEditor } from './components/theme/ThemeEditor.jsx';
 import { useData } from './helpers/hooks/useData.js';
+import { AccessWrapper } from './AccessWrapper.jsx';
 
 export const App = ({
   initialized,
@@ -42,9 +48,8 @@ export const App = ({
   }, [themeCSS]);
 
   // Get redux app state
-  const { authenticated, kappSlug, error, space, kapp, profile } = useSelector(
-    state => state.app,
-  );
+  const { authenticated, kappSlug, error, space, kapp, profile, cid, config } =
+    useSelector(state => state.app);
 
   // Set an `authenticated` flag in global state that is synced to the loggedIn
   // prop, and can be used in the app to determine if the user is authenticated
@@ -123,6 +128,35 @@ export const App = ({
     }
   }, [kappInit, kappLoading, kappData]);
 
+  // Fetch the client config data once we have a user with a CID
+  const configParams = useMemo(
+    () =>
+      cid
+        ? {
+            kapp: 'datastore',
+            form: 'client-configuration',
+            search: {
+              include: ['values'],
+              limit: 1,
+              q: `values[CID] = "${cid}"`,
+              // q: `values[Status] = "Active" AND values[CID] = "${cid}"`,
+            },
+          }
+        : null,
+    [cid],
+  );
+  const {
+    initialized: configInit,
+    loading: configLoading,
+    response: configData,
+  } = useData(searchSubmissions, configParams);
+  // Set the config data into redux
+  useEffect(() => {
+    if (configInit && !configLoading) {
+      appActions.setConfig(configData);
+    }
+  }, [configInit, configLoading, configData]);
+
   // Clear toasts and confirmation modals whenever we change routes
   useRouteChange((pathname, state) => {
     if (!state?.persistToasts) {
@@ -147,7 +181,7 @@ export const App = ({
             // If an error occurred during auth or fetching app data, show an
             // error screen
             <Error error={serverError || error} />
-          ) : !initialized || !space ? (
+          ) : !initialized || !space || (cid && !config) ? (
             // If auth isn't initialized or space record isn't fetched, show a
             // loading screen
             <Loading />
@@ -160,7 +194,9 @@ export const App = ({
             // fetched, render the private routes, and render the Login
             // component in a modal if auth times out
             <>
-              <PrivateRoutes />
+              <AccessWrapper profile={profile} config={config}>
+                <PrivateRoutes />
+              </AccessWrapper>
               {timedOut && (
                 <dialog open>
                   <Login {...loginProps} />

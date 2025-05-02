@@ -7,10 +7,10 @@
  *
  * @param {Object} record A kinetic record that may contain attributes
  * @param {string} attributeName The name of the attribute to retrieve
- * @param {string} [defaultValue] The default value to return if the attribute
- *  is not found or doesn't have a value.
- * @returns {string} The value of the attribute, returning the first one if
- *  there are multiple, or the `defaultValue` if no value is found.
+ * @param {string|null} [defaultValue] The default value to return if the
+ *  attribute is not found or doesn't have a value.
+ * @returns {string|null} The value of the attribute, returning the first one
+ *  if there are multiple, or the `defaultValue` if no value is found.
  */
 export const getAttributeValue = (record, attributeName, defaultValue) =>
   (record &&
