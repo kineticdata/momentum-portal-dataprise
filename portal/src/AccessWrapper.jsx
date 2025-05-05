@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { updateUser } from '@kineticdata/react';
 import { Error } from './components/states/Error.jsx';
 import { Loading } from './components/states/Loading.jsx';
+import { executeIntegration } from './helpers/api.js';
 import { getAttributeValue } from './helpers/records.js';
 import { appActions } from './helpers/state.js';
 
-export const AccessWrapper = ({ children, profile, config }) => {
+export const AccessWrapper = ({ children, cid, profile, config }) => {
   const username = profile?.username;
 
   // Has access been initialized
@@ -25,16 +25,12 @@ export const AccessWrapper = ({ children, profile, config }) => {
   useEffect(() => {
     if (!ready && !validPermissions) {
       // Update user's Company Permission Masks to match the config
-      updateUser({
-        username: username,
-        user: {
-          attributesMap: {
-            'Company Permission Masks': [configPermissions],
-          },
-        },
-        include: 'attributesMap',
+      executeIntegration({
+        kappSlug: 'service-portal',
+        integrationName: 'Update User Company Permission Masks',
+        parameters: { permissionMasks: configPermissions },
       }).then(({ error, user }) => {
-        if (!error) {
+        if (!error && user) {
           appActions.updateProfile(user);
         }
         setReady(true);
@@ -46,9 +42,23 @@ export const AccessWrapper = ({ children, profile, config }) => {
 
   if (!ready) return <Loading />;
 
-  return validPermissions ? (
+  return !cid ? (
+    <Error
+      header={true}
+      error={{
+        message:
+          'Your user record is not configured properly. Please contact an administrator.',
+      }}
+    />
+  ) : validPermissions ? (
     children
   ) : (
-    <Error error={{ message: 'User has invalid permissions.' }} />
+    <Error
+      header={true}
+      error={{
+        message:
+          'Your user record has invalid permissions. Please reload, and if the error persists, contact an administrator.',
+      }}
+    />
   );
 };

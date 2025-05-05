@@ -30,8 +30,6 @@ export const App = ({
   timedOut,
   serverError,
 }) => {
-  // Get redux view state
-  const mobile = useSelector(state => state.view.mobile);
   // Get redux theme state
   const { css: themeCSS, ready: themeReady } = useSelector(
     state => state.theme,
@@ -180,7 +178,7 @@ export const App = ({
           {serverError || error ? (
             // If an error occurred during auth or fetching app data, show an
             // error screen
-            <Error error={serverError || error} />
+            <Error error={serverError || error} header={true} />
           ) : !initialized || !space || (cid && !config) ? (
             // If auth isn't initialized or space record isn't fetched, show a
             // loading screen
@@ -194,7 +192,7 @@ export const App = ({
             // fetched, render the private routes, and render the Login
             // component in a modal if auth times out
             <>
-              <AccessWrapper profile={profile} config={config}>
+              <AccessWrapper cid={cid} profile={profile} config={config}>
                 <PrivateRoutes />
               </AccessWrapper>
               {timedOut && (
