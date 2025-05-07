@@ -5,8 +5,14 @@ import clsx from 'clsx';
 export const TicketsTabs = ({
   className,
   active = 'requests',
-  requestsProps = { to: '/requests', active: active === 'requests' },
-  actionsProps = { to: '/actions', active: active === 'actions' },
+  requestsProps: { label: requestsLabel = 'My Requests', ...requestsProps } = {
+    to: '/requests',
+    active: active === 'requests',
+  },
+  actionsProps: { label: actionsLabel = 'My Actions', ...actionsProps } = {
+    to: '/actions',
+    active: active === 'actions',
+  },
 }) => (
   <div
     className={clsx(
@@ -17,8 +23,8 @@ export const TicketsTabs = ({
       className,
     )}
   >
-    <TabButton {...requestsProps}>My Requests</TabButton>
-    <TabButton {...actionsProps}>My Actions</TabButton>
+    <TabButton {...requestsProps}>{requestsLabel}</TabButton>
+    <TabButton {...actionsProps}>{actionsLabel}</TabButton>
   </div>
 );
 

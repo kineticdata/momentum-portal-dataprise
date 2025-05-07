@@ -72,7 +72,7 @@ const ResetPasswordRequestForm = () => {
         <img
           src={themeLogo || logo}
           alt="Logo"
-          className="h-6 max-h-12 object-contain mt-4 mb-5"
+          className="h-10 max-w-45 object-contain mt-4 mb-5"
         />
         <div className="field">
           <label htmlFor="username">Username</label>
@@ -182,7 +182,7 @@ const ResetPasswordChangeForm = ({ token, username }) => {
       <img
         src={themeLogo || logo}
         alt="Logo"
-        className="h-12 object-contain mt-4 mb-5"
+        className="h-10 max-w-45 object-contain mt-4 mb-5"
       />
       {!token || !username ? (
         <>The reset password link is invalid.</>

@@ -36,7 +36,7 @@ export const Badges = () => {
   );
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 break-inside-avoid bg-base-100 border rounded-box p-3">
       <h2>Badges</h2>
       <div className="flex flex-wrap gap-1">
         <Variant className="kbadge">Default</Variant>

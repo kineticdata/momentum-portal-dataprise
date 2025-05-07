@@ -20,7 +20,7 @@ export const DesktopHeader = () => {
           <img
             src={themeLogo || logo}
             alt="Logo"
-            className="h-6 max-h-12 max-w-80 object-contain"
+            className="h-10 max-w-45 object-contain"
           />
         </Link>
         <Button variant="tertiary" to="requests">

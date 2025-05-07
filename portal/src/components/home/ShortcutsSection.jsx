@@ -7,7 +7,14 @@ import { sortBy } from '../../helpers/index.js';
 import { useData } from '../../helpers/hooks/useData.js';
 import { useMemo } from 'react';
 
-const ShortcutLink = ({ title, description, icon, link, mobile }) => {
+export const ShortcutLink = ({
+  title,
+  description,
+  icon,
+  link,
+  mobile,
+  className,
+}) => {
   return (
     <a
       href={link}
@@ -21,6 +28,7 @@ const ShortcutLink = ({ title, description, icon, link, mobile }) => {
         'w-full px-3 py-1.5',
         // Non mobile styles
         'md:w-1/4 md:h-32 md:py-2.5',
+        className,
       )}
     >
       <span

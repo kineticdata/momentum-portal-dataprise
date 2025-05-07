@@ -79,8 +79,8 @@ const handleDelete = (id, reload) =>
       }),
   });
 
-export const TicketCard = ({ submission, reload }) => {
-  const mobile = useSelector(state => state.view.mobile);
+export const TicketCard = ({ submission, reload, mobile }) => {
+  const isMobile = useSelector(state => mobile || state.view.mobile);
   const location = useLocation();
   const icon = getAttributeValue(submission?.form, 'Icon', 'checklist');
   const meta = getMetaData(submission);
@@ -97,11 +97,11 @@ export const TicketCard = ({ submission, reload }) => {
         // Common styles
         'group relative',
       )}
-      onTouchStart={mobile && meta.canDelete ? onTouchStart : undefined}
-      onTouchMove={mobile && meta.canDelete ? onTouchMove : undefined}
-      onTouchEnd={mobile && meta.canDelete ? onTouchEnd : undefined}
+      onTouchStart={isMobile && meta.canDelete ? onTouchStart : undefined}
+      onTouchMove={isMobile && meta.canDelete ? onTouchMove : undefined}
+      onTouchEnd={isMobile && meta.canDelete ? onTouchEnd : undefined}
     >
-      {mobile && meta.canDelete && (
+      {isMobile && meta.canDelete && (
         <div
           className={clsx(
             'absolute top-0 right-0.25 h-full w-24 pl-4',
@@ -130,7 +130,7 @@ export const TicketCard = ({ submission, reload }) => {
         <div className="bg-base-200 border border-base-300 text-base-content/60 rounded-xl shadow-icon flex-none p-1.25 md:p-1.75">
           <Icon name={icon} />
         </div>
-        {mobile ? (
+        {isMobile ? (
           <div className="flex flex-col gap-1 min-w-0">
             <Link
               className="text-sm font-medium leading-4 line-clamp-2 after:absolute after:inset-0 outline-0"
@@ -139,7 +139,9 @@ export const TicketCard = ({ submission, reload }) => {
             >
               {submission.label}
             </Link>
-            <div className="text-xs text-base-content/60">{meta.dateString}</div>
+            <div className="text-xs text-base-content/60">
+              {meta.dateString}
+            </div>
           </div>
         ) : (
           <>
@@ -157,11 +159,11 @@ export const TicketCard = ({ submission, reload }) => {
           <StatusPill
             className={clsx({
               'group-hover:min-w-20 group-focus-within:min-w-20':
-                !mobile && meta.canDelete,
+                !isMobile && meta.canDelete,
             })}
             status={meta.status}
           />
-          {!mobile && meta.canDelete && (
+          {!isMobile && meta.canDelete && (
             <Button
               variant="secondary"
               icon="trash"
@@ -240,7 +242,7 @@ export const HomeTicketCard = ({
           <div className="flex-auto min-w-0">
             <Link
               className="block md:text-h3 font-medium text-right truncate after:absolute after:inset-0 outline-0"
-              to={`/${page}/${getToPath(submission)}`}
+              to={page ? `/${page}/${getToPath(submission)}` : undefined}
               state={{ backPath: `/${page}` }}
               onClick={e => {
                 if (mobile) {

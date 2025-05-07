@@ -3,6 +3,7 @@ import { Search } from './search.js';
 import { Signature } from './signature.js';
 import { Subform } from './subform.js';
 import { Table } from './table.js';
+import { Theme } from './theme.js';
 
 import utils from './utils.js';
 
@@ -13,6 +14,7 @@ const AVAILABLE_WIDGETS = {
   Signature,
   Subform,
   Table,
+  Theme,
 };
 
 // Ensure the bundle global object exists

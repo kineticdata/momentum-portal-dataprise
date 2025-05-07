@@ -19,7 +19,6 @@ import { PrivateRoutes } from './pages/PrivateRoutes.jsx';
 import { PublicRoutes } from './pages/PublicRoutes.jsx';
 import { Login } from './pages/login/Login.jsx';
 import { ConfirmationModal } from './components/confirm/ConfirmationModal.jsx';
-import { ThemeEditor } from './components/theme/ThemeEditor.jsx';
 import { useData } from './helpers/hooks/useData.js';
 import { AccessWrapper } from './AccessWrapper.jsx';
 
@@ -31,9 +30,7 @@ export const App = ({
   serverError,
 }) => {
   // Get redux theme state
-  const { css: themeCSS, ready: themeReady } = useSelector(
-    state => state.theme,
-  );
+  const { css: themeCSS } = useSelector(state => state.theme);
   // Update the styles if there is a theme set
   useEffect(() => {
     if (themeCSS) {
@@ -77,7 +74,6 @@ export const App = ({
   useEffect(() => {
     if (spaceInit && !spaceLoading) {
       appActions.setSpace(spaceData);
-      themeActions.setTheme({ ...spaceData, init: true });
     }
   }, [spaceInit, spaceLoading, spaceData]);
 
@@ -122,7 +118,6 @@ export const App = ({
   useEffect(() => {
     if (kappInit && !kappLoading) {
       appActions.setKapp(kappData);
-      themeActions.setTheme({ ...kappData, init: true });
     }
   }, [kappInit, kappLoading, kappData]);
 
@@ -152,6 +147,7 @@ export const App = ({
   useEffect(() => {
     if (configInit && !configLoading) {
       appActions.setConfig(configData);
+      themeActions.setConfig(configData);
     }
   }, [configInit, configLoading, configData]);
 
@@ -207,9 +203,6 @@ export const App = ({
 
           {/* Toast container */}
           <Toaster />
-
-          {/* Theme Editor */}
-          {themeReady && <ThemeEditor />}
         </main>
 
         {/* Footer element where we will render footers via a portal */}

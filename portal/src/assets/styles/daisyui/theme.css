@@ -1,0 +1,23 @@
+:root {
+  /* Theme Colors */
+  --theme-base-100: #ffffff;
+  --theme-base-200: #f7f9fa;
+  --theme-base-300: #d0d4db;
+  --theme-base-content: #0c0c0c;
+  --theme-primary: #03a9f4;
+  --theme-primary-content: #0c0c0c;
+  --theme-secondary: #1f3d5a;
+  --theme-secondary-content: #d4dfeb;
+  --theme-accent: #80f7ff;
+  --theme-accent-content: #003a45;
+  --theme-neutral: #0f0e1b;
+  --theme-neutral-content: #e8e5ff;
+  --theme-info: #c7dfff;
+  --theme-info-content: #1d2229;
+  --theme-success: #d3edd3;
+  --theme-success-content: #383f38;
+  --theme-warning: #fcfae6;
+  --theme-warning-content: #eeaf00;
+  --theme-error: #fec8c8;
+  --theme-error-content: #801518;
+}

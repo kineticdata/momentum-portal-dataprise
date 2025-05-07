@@ -327,7 +327,7 @@ export const PopularServiceButton = ({
       </span>
       <span className="text-center line-clamp-2">{children}</span>
       {category && (
-        <span className="px-2 py-0.5 rounded-lg bg-base-300 text-center line-clamp-1 mt-auto">
+        <span className="px-2 py-0.5 rounded-lg bg-base-300 text-base-content text-center line-clamp-1 mt-auto">
           {category}
         </span>
       )}

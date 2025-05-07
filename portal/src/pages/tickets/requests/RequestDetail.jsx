@@ -165,7 +165,7 @@ const WorkNotes = ({ id }) => {
   }
 };
 
-const Activity = ({ first, last, mobile, icon, activity }) => {
+export const Activity = ({ first, last, mobile, icon, activity }) => {
   const data = parseActivityData(activity.data);
   const snowIncidentSysId = data?.['SNOW SYS ID'];
   const status =
@@ -274,7 +274,9 @@ const Activity = ({ first, last, mobile, icon, activity }) => {
                 ([key, value]) =>
                   key !== 'Status' && (
                     <div key={key} className="flex flex-col gap-0.5 md:gap-1">
-                      <dt className="text-base-content/60 font-medium">{key}</dt>
+                      <dt className="text-base-content/60 font-medium">
+                        {key}
+                      </dt>
                       <dd>{value}</dd>
                     </div>
                   ),

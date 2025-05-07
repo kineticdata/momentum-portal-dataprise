@@ -75,12 +75,15 @@ export const Modal = ({
         <Dialog.Backdrop className="fixed inset-0 bg-black/20" />
         <Dialog.Positioner className="kmodal">
           <Dialog.Content
-            className={clsx('kmodal-box', {
-              'md:w-screen-sm': size === 'sm',
-              'md:w-screen-md': size === 'md',
-              'md:w-screen-lg': size === 'lg',
-              'md:w-screen': size === 'xl',
-            })}
+            className={clsx(
+              'kmodal-box overflow-hidden max-w-[calc(100vw-3rem)]',
+              {
+                'md:w-screen-sm': size === 'sm',
+                'md:w-screen-md': size === 'md',
+                'md:w-screen-lg': size === 'lg',
+                'md:w-screen md:h-screen': size === 'xl',
+              },
+            )}
           >
             <div className="flex justify-between items-center gap-2">
               <Dialog.Title className="flex-auto" asChild={!!slots.title}>

@@ -1,27 +1,45 @@
 import { throttle } from 'lodash-es';
 import { regRedux } from '../redux.js';
 import { getAttributeValue } from './records.js';
-import { calculateThemeState, themeState } from './theme.js';
 
 // State for the customized theme
 export const themeActions = regRedux(
   'theme',
-  { ...themeState },
   {
-    setTheme(state, payload) {
-      calculateThemeState(
-        state,
-        getAttributeValue(payload.kapp || payload.space, 'Theme'),
-        payload.kapp ? 'Kapp' : 'Space',
-        payload.updateLive,
-        payload.init,
-      );
-    },
-    enableEditor(state) {
-      state.editor = true;
-    },
-    disableEditor(state) {
-      state.editor = false;
+    // Has the theme been initialized
+    ready: false,
+    // A string of css variable overrides to alter the theme
+    css: null,
+    // URL to logo image
+    logo: null,
+    // Colors object
+    colors: {},
+  },
+  {
+    setConfig(state, payload) {
+      const config = payload.submissions?.[0];
+
+      if (config) {
+        const logo = config.values.Logo?.[0];
+        if (logo?.link) {
+          state.logo = logo?.link.replace(/^\/[a-z\d-]+\//, '/');
+        }
+
+        let colors = {};
+        try {
+          const value = config.values['Design Colors JSON'];
+          if (value) colors = JSON.parse(value);
+        } catch (e) {
+          // Do nothing
+        }
+        state.colors = colors;
+
+        const cssVars = [];
+        Object.entries(colors).forEach(([name, value]) =>
+          cssVars.push(`--theme-${name}: ${value};`),
+        );
+        state.css = ':root {\n' + cssVars.join('\n') + '\n}';
+      }
     },
   },
 );

@@ -2,22 +2,17 @@ import { useSelector } from 'react-redux';
 import { useState, useCallback } from 'react';
 import clsx from 'clsx';
 import { produce } from 'immer';
-import { updateProfile, updateSpace } from '@kineticdata/react';
+import { updateProfile } from '@kineticdata/react';
 import { Avatar } from '../../atoms/Avatar.jsx';
 import { Button } from '../../atoms/Button.jsx';
-import { Icon } from '../../atoms/Icon.jsx';
 import { validateEmail } from '../../helpers/index.js';
-import { appActions, themeActions } from '../../helpers/state.js';
+import { appActions } from '../../helpers/state.js';
 import { toastError, toastSuccess } from '../../helpers/toasts.js';
-import { getAttributeValue } from '../../helpers/records.js';
-import { Menu } from '../../atoms/Menu.jsx';
-import { openConfirm } from '../../helpers/confirm.js';
 import { useLocation } from 'react-router-dom';
 
 export const Profile = () => {
   const mobile = useSelector(state => state.view.mobile);
-  const theme = useSelector(state => state.theme);
-  const { profile, space } = useSelector(state => state.app);
+  const { profile } = useSelector(state => state.app);
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showChangedPassword, setShowChangedPassword] = useState(false);
@@ -31,16 +26,6 @@ export const Profile = () => {
 
   const location = useLocation();
   const backPath = location.state?.backPath;
-
-  const portalKappSlug = getAttributeValue(
-    space,
-    'Service Portal Kapp Slug',
-    'service-portal',
-  );
-  const portalKapp = space?.kapps?.find(k => k.slug === portalKappSlug) || {
-    name: 'Invalid Kapp',
-    slug: portalKappSlug,
-  };
 
   const validateForm = () => {
     // Validate the fields
@@ -119,7 +104,7 @@ export const Profile = () => {
       </div>
       <form className="self-center flex flex-col gap-5 items-stretch w-full max-w-lg">
         <div className="flex justify-center items-center mb-5 mt-8">
-          <Avatar username={profile.username} size="xxl" />
+          <Avatar username={profile.username} size="2xl" />
         </div>
 
         <div
@@ -220,83 +205,6 @@ export const Profile = () => {
         >
           Save
         </Button>
-        <div className="flex items-center justify-center">
-          <a className="kbtn kbtn-ghost" href="/app/logout">
-            <Icon name="logout" aria-label="Logout"></Icon>
-            <span>Logout</span>
-          </a>
-        </div>
-
-        {profile.spaceAdmin && (
-          <>
-            <hr className="border-base-300" />
-            <div className="field">
-              <label htmlFor="">Current Portal Kapp</label>
-              <Menu
-                items={(space?.kapps || []).map(k => ({
-                  label: `${k.name} <${k.slug}>`,
-                  onClick: () => {
-                    if (portalKappSlug !== k.slug) {
-                      openConfirm({
-                        title: 'Change Portal Kapp',
-                        description: `Are you sure you want to change the portal kapp to ${k.name}?`,
-                        acceptLabel: 'Yes',
-                        accept: () => {
-                          updateSpace({
-                            space: {
-                              attributesMap: {
-                                'Service Portal Kapp Slug': [k.slug],
-                              },
-                            },
-                            include: 'attributesMap,kapps',
-                          }).then(({ error, space }) => {
-                            if (error) {
-                              toastError({
-                                title: 'Failed to update portal kapp',
-                                description: error.message,
-                              });
-                            } else {
-                              toastSuccess({
-                                title: 'Successfully updated portal kapp',
-                              });
-                              appActions.setSpace({ space });
-                            }
-                          });
-                        },
-                      });
-                    }
-                  },
-                }))}
-              >
-                <Button
-                  slot="trigger"
-                  type="button"
-                  variant="secondary"
-                  className="w-full"
-                >
-                  {portalKapp.name} &lt;{portalKapp.slug}&gt;
-                  <Icon name="chevron-down" className="ml-auto" />
-                </Button>
-              </Menu>
-            </div>
-            {theme.ready && (
-              <div className="flex justify-center items-center">
-                <Button
-                  variant="tertiary"
-                  onClick={() =>
-                    theme.editor
-                      ? themeActions.disableEditor()
-                      : themeActions.enableEditor()
-                  }
-                >
-                  {theme.editor
-                    ? 'Disable Theme Editor'
-                    : 'Enable Theme Editor'}
-                </Button>
-              </div>
-            )}
-          </>
-        )}
       </form>
     </>
   );

@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import { ColorPicker, parseColor } from '@ark-ui/react/color-picker';
 import clsx from 'clsx';
-import { Button } from './Button.jsx';
+import { Button, CloseButton } from './Button.jsx';
 import { callIfFn } from '../helpers/index.js';
 import { calcPlacement } from '../helpers/atoms.js';
 
+const sameColor = (a, b) => !a || a.toLowerCase() === b?.toLocaleString();
+
 export const ColorField = ({
   value,
+  defaultValue = '#ffffff',
   onChange,
   position,
   alignment,
+  id,
   ...props
 }) => {
   const placement = calcPlacement(position, alignment);
-  const [color, setColor] = useState(parseColor(value || '#ffffff'));
+  const [color, setColor] = useState(parseColor(value || defaultValue));
 
   useEffect(() => {
     callIfFn(onChange, null, [color.toString('hex')]);
@@ -23,12 +27,16 @@ export const ColorField = ({
     <div className="field">
       <ColorPicker.Root
         {...props}
+        value={color}
         onValueChange={e => setColor(e.value)}
-        defaultValue={parseColor(value || '#ffffff')}
         positioning={{ placement }}
       >
         <ColorPicker.Control className={clsx('relative')}>
-          <ColorPicker.ChannelInput channel="hex" className={clsx('!pl-12')} />
+          <ColorPicker.ChannelInput
+            id={id}
+            channel="hex"
+            className={clsx('!pl-12')}
+          />
           <ColorPicker.Trigger
             className={clsx('!absolute top-0 left-0 m-1.25 z-1')}
           >
@@ -36,6 +44,13 @@ export const ColorField = ({
               className={clsx('block p-4 border-1 rounded-full')}
             />
           </ColorPicker.Trigger>
+          {!sameColor(value, defaultValue) && (
+            <CloseButton
+              className="absolute right-0 top-0 z-1"
+              aria-label="Reset"
+              onClick={() => setColor(parseColor(defaultValue))}
+            />
+          )}
         </ColorPicker.Control>
         <ColorPicker.Positioner>
           <ColorPicker.Content

@@ -35,14 +35,16 @@ export const Avatar = ({
           'h-6 w-6': size === 'md',
           'h-10 w-10': size === 'lg',
           'h-12 w-12': size === 'xl',
-          'h-16 w-16': size === 'xxl',
+          'h-16 w-16': size === '2xl',
+          'h-24 w-24': size === '3xl',
         },
         {
           'text-xs': size === 'sm',
           'text-base': size === 'md',
           'text-h3 font-medium': size === 'lg',
           'text-h2 font-medium': size === 'xl',
-          'text-h1 font-medium': size === 'xxl',
+          'text-h1 font-medium': size === '2xl',
+          'text-5xl font-semibold': size === '3xl',
         },
         className,
       )}
@@ -56,6 +58,6 @@ export const Avatar = ({
 
 Avatar.propTypes = {
   username: t.string.isRequired,
-  size: t.oneOf(['sm', 'md', 'lg', 'xl', 'xxl']),
+  size: t.oneOf(['sm', 'md', 'lg', 'xl', '2xl', '3xl']),
   className: t.string,
 };
