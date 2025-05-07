@@ -31,7 +31,7 @@ export const LoginForm = loginProps => {
       <img
         src={themeLogo || logo}
         alt="Logo"
-        className="h-10 max-w-45 object-contain mb-5 mt-5"
+        className="h-10 max-w-45 object-contain mb-5 mt-5 self-center"
       />
       <div className="field">
         <label htmlFor="username">Username</label>
